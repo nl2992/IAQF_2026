@@ -1,0 +1,361 @@
+PART 1 — FREE HISTORICAL L2 DATA SOURCES
+
+You cannot get historical L2 snapshots via simple REST queries retroactively.
+
+You must use public data dumps.
+
+✅ BINANCE (BEST FREE OPTION)
+Source:
+
+Binance Public Data Archive
+https://data.binance.vision/
+
+Path Structure:
+
+Spot order book data:
+
+data/spot/daily/depth/BTCUSDT/
+data/spot/daily/depth/BTCUSDC/
+
+Files:
+
+BTCUSDT-depth-2023-03-01.zip
+BTCUSDT-depth-2023-03-02.zip
+...
+
+Contains incremental depth updates.
+
+Also download:
+
+data/spot/daily/trades/BTCUSDT/
+
+You need trades for price impact metrics.
+
+Download Procedure
+
+For each date March 1–21:
+
+Download:
+
+BTCUSDT-depth-YYYY-MM-DD.zip
+
+BTCUSDC-depth-YYYY-MM-DD.zip
+
+BTCUSDT-trades-YYYY-MM-DD.zip
+
+BTCUSDC-trades-YYYY-MM-DD.zip
+
+Unzip all files.
+
+✅ COINBASE (FREE BUT HARDER)
+
+Coinbase does not provide full historical L2 dumps publicly.
+
+Options:
+
+Option A — Coinbase Level 2 Replay via Coinbase Exchange S3 Archive
+
+Public archive:
+https://s3.amazonaws.com/coinbase-data-exchange/
+
+Search for:
+
+BTC-USD
+
+BTC-USDT
+
+BTC-USDC
+
+If unavailable:
+
+Option B — Use Tardis.dev Free Trial
+
+They allow limited historical extraction.
+
+✅ KRAKEN
+
+Kraken provides limited historical L2.
+
+Use:
+https://docs.kraken.com/rest/#tag/Market-Data
+
+For historical:
+Use CCXT + archived tick-level community datasets (GitHub mirrors).
+
+Kraken not mandatory if Binance + Coinbase sufficient.
+
+PART 2 — RECONSTRUCTING ORDER BOOK FROM BINANCE INCREMENTAL FILES
+
+Binance depth files contain incremental updates.
+
+You must reconstruct full book.
+
+Step 1 — Initialize Empty Order Book
+
+Maintain two dictionaries:
+
+bids = {}
+asks = {}
+Step 2 — Load Depth Update Rows Sequentially
+
+Each row contains:
+
+event_time
+bid_price
+bid_quantity
+ask_price
+ask_quantity
+
+For each row:
+
+If bid_quantity > 0:
+bids[price] = quantity
+Else:
+delete bids[price]
+
+Same for asks.
+
+Step 3 — Maintain Sorted Book
+
+At each update:
+
+Best bid = max(bids.keys())
+Best ask = min(asks.keys())
+
+Step 4 — Snapshot Book at Desired Frequency
+
+If working at 1-second:
+
+At each second boundary:
+Store top 50 bids
+Store top 50 asks
+
+If working at 1-minute:
+Store last snapshot in minute
+
+PART 3 — STORAGE SCHEMA
+
+Do NOT store as nested JSON.
+
+Use structured format.
+
+Recommended Storage: Parquet Files
+
+Directory structure:
+
+/data/
+    /binance/
+        /BTCUSDT/
+            depth_2023-03-01.parquet
+            trades_2023-03-01.parquet
+L2 Snapshot Schema
+
+For each timestamp:
+
+timestamp
+exchange
+pair
+side (bid/ask)
+level (1..50)
+price
+quantity
+
+Long format preferred.
+
+Trade Schema
+timestamp
+price
+quantity
+side (buy/sell)
+PART 4 — CLEANING RULES
+
+Convert timestamps to UTC.
+
+Remove duplicates.
+
+Drop crossed books (bid ≥ ask).
+
+Remove negative quantities.
+
+If book empty → discard timestamp.
+
+Ensure monotonic timestamps.
+
+PART 5 — CONSTRUCT L2 METRICS
+
+All metrics computed per minute after reconstruction.
+
+1️⃣ DEPTH WITHIN X BPS
+
+Let mid_t = (best_bid + best_ask)/2
+
+For 10 bps:
+
+depth_bid = sum quantity where price >= mid*(1 - 0.001)
+depth_ask = sum quantity where price <= mid*(1 + 0.001)
+depth_total = depth_bid + depth_ask
+2️⃣ ORDER BOOK IMBALANCE (Top 5 Levels)
+OBI_t =
+(sum bid_qty_level_1_to_5 - sum ask_qty_level_1_to_5)
+/
+(sum bid_qty_level_1_to_5 + sum ask_qty_level_1_to_5)
+3️⃣ BOOK SLOPE
+
+For bid side:
+
+Let:
+
+x_i = cumulative volume up to level i
+y_i = price distance from mid
+
+Run OLS:
+
+y_i = α + β x_i
+
+Slope = β
+
+Higher β = thinner book.
+
+4️⃣ KYLE LAMBDA
+
+Using trades:
+
+Compute per minute:
+
+SignedVolume_t = sum(sign * quantity)
+
+Return_t = log(mid_t) - log(mid_t-1)
+
+Run regression:
+
+Return_t = λ * SignedVolume_t + ε
+
+λ = price impact coefficient.
+
+5️⃣ AMIHUD ILLIQUIDITY
+
+Per minute:
+
+ILLIQ_t = |Return_t| / Volume_t
+
+6️⃣ RESILIENCY
+
+Procedure:
+
+Identify minute where return exceeds threshold.
+
+Measure number of seconds until mid returns within 50% of shock.
+
+Store recovery time.
+
+PART 6 — WHICH METRICS REQUIRE TICK VS SNAPSHOT
+Metric	Snapshot OK	Needs Trades
+Depth	Yes	No
+OBI	Yes	No
+Slope	Yes	No
+Kyle λ	No	Yes
+Amihud	No	Yes
+Resiliency	Snapshot OK	Better with tick
+PART 7 — AGGREGATE L2 METRICS TO 1-MINUTE
+
+After reconstructing second-level:
+
+For each minute:
+
+Average OBI
+
+Average depth
+
+Average slope
+
+Sum volume
+
+Compute minute return
+
+Store in:
+
+timestamp
+exchange
+pair
+mid
+spread
+depth
+OBI
+slope
+volume
+return
+lambda (rolling window)
+ILLIQ
+PART 8 — MERGE INTO EXISTING LOP DATASET
+
+You already have:
+
+timestamp
+LOP_USDT
+LOP_USDC
+SCFX
+Residual
+
+Now:
+
+Merge on timestamp and exchange.
+
+Final dataset:
+
+timestamp
+LOP
+Residual
+depth
+OBI
+slope
+spread
+volatility
+lambda
+ILLIQ
+regime
+PART 9 — EXTENDED REGRESSION
+
+Run:
+
+|LOP|_t =
+α +
+β1 spread_t +
+β2 depth_t +
+β3 OBI_t +
+β4 lambda_t +
+β5 regime_dummy +
+ε_t
+
+Cluster SE by day.
+
+PART 10 — DIFFERENTIATION ANALYSIS
+
+Compare:
+
+During crisis window:
+
+Depth collapse %
+
+Lambda increase %
+
+OBI skew magnitude
+
+Spread widening %
+
+Show that:
+
+Liquidity withdrawal explains LOP widening.
+
+FINAL RESULT
+
+You now have:
+
+L1 (spread)
+
+L2 (depth, imbalance, slope)
+
+Trade-level (lambda, Amihud)
+
+Decomposition (SCFX vs segmentation)
+
+That is institution-level microstructure work.
