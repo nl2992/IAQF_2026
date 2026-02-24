@@ -236,7 +236,7 @@ Microstructure metrics computed from tick data. BTCUSDT: 30,240 rows (Mar 1–21
 
 The figure below provides a three-panel overview of the full study period. The top panel shows BTC prices across all quote currencies. The middle panel shows the log LOP deviations for USDT and USDC pairs on Binance.US. The bottom panel shows the USDC/USD and USDT/USD exchange rates.
 
-![Figure 1: Price, LOP, and FX Overview](./figures/master/master_fig1_price_lop_overview.png)
+![Figure 1: Price, LOP, and FX Overview](figures/master/master_fig1_price_lop_overview.png)
 
 *Figure 1: Overview of BTC/USD price (top), LOP deviations for USDT and USDC pairs (middle), and stablecoin FX rates (bottom) for the full study period March 1–21, 2023. The crisis window (Mar 10–12) is highlighted in red.*
 
@@ -258,7 +258,7 @@ The table below summarises key metrics across all four regimes.
 
 The figure below shows a minute-by-minute view of the USDC/USD price and the corresponding BTC/USDC vs BTC/USD LOP deviation during the crisis window. The two series are almost perfect mirror images, with a correlation of **−0.997**.
 
-![Figure 2: USDC De-Peg Deep Dive](./figures/master/master_fig3_stablecoin_depeg.png)
+![Figure 2: USDC De-Peg Deep Dive](figures/master/master_fig3_stablecoin_depeg.png)
 
 *Figure 2: Minute-by-minute USDC/USD price (top) and BTC/USDC vs BTC/USD LOP deviation (bottom) during the crisis. The near-perfect negative correlation (−0.997) confirms that the LOP deviation is almost entirely driven by the stablecoin de-peg.*
 
@@ -266,7 +266,7 @@ The figure below shows a minute-by-minute view of the USDC/USD price and the cor
 
 The figure below provides a 4-panel view of the crisis window (March 10–13), showing BTC prices across quote currencies, the LOP deviation, stablecoin FX rates, and realized volatility simultaneously.
 
-![Figure 3: Crisis Deep Dive](./figures/master/master_fig9_crisis_deep_dive.png)
+![Figure 3: Crisis Deep Dive](figures/master/master_fig9_crisis_deep_dive.png)
 
 *Figure 3: 4-panel crisis deep dive at 1-minute resolution. The BTC/USD price (red) diverges sharply from BTC/USDT (blue) as the USDC de-peg propagates across markets.*
 
@@ -309,7 +309,7 @@ BTC prices are non-stationary (I(1)), while LOP deviations and stablecoin FX rat
 
 ### 6.6. OLS Regression Coefficients
 
-![Figure 4: OLS Regression Coefficients](./figures/master/master_fig11_regression_coefs.png)
+![Figure 4: OLS Regression Coefficients](figures/master/master_fig11_regression_coefs.png)
 
 *Figure 4: Coefficient estimates (with 95% confidence intervals) from the OLS regression of log|LOP USDT| on microstructure variables and regime dummies. The regime dummies dominate — the crisis, recovery, and post periods all show significantly elevated LOP deviations relative to the pre-crisis baseline.*
 
@@ -333,7 +333,7 @@ Kyle's Lambda measures the price impact per unit of signed order flow. Higher va
 
 The BTCUSDC Kyle Lambda during the crisis is **64× higher** than BTCUSDT in the same period, reflecting the extreme thinness of the newly listed pair's order book.
 
-![Figure 5: Kyle's Lambda by Pair and Regime](./figures/master/master_fig6_kyle_lambda.png)
+![Figure 5: Kyle's Lambda by Pair and Regime](figures/master/master_fig6_kyle_lambda.png)
 
 *Figure 5: Kyle's Lambda for BTC/USDT and BTC/USDC across different regimes. The newly listed BTC/USDC pair shows dramatically higher price impact during the crisis, with the mean driven by extreme outlier minutes when the order book was nearly empty.*
 
@@ -366,7 +366,7 @@ The regime dummies absorb almost all explanatory power. Adding L2 microstructure
 
 A 4-state Gaussian HMM was trained on BTC/USD 1-minute returns and realized volatility, with no regime labels provided. The model successfully identifies four latent states that correspond almost perfectly to the hand-labeled regimes.
 
-![Figure 6: HMM Latent States](./figures/advanced/adv_fig1_hmm.png)
+![Figure 6: HMM Latent States](figures/advanced/adv_fig1_hmm.png)
 
 *Figure 6: The four latent market states identified by the HMM. State 3 (red) correctly identifies the crisis period (Mar 10–12) without any prior regime labels. State persistence is ≥ 0.986 on the diagonal of the transition matrix.*
 
@@ -384,7 +384,7 @@ Fitted to BTC/USD 1-minute returns to model conditional variance and leverage ef
 
 The persistence α+β = 0.9997 is near-unity, indicating extremely long-lived volatility shocks. The GJR leverage parameter γ > 0 confirms that negative return shocks amplify conditional variance more than positive shocks of equal magnitude.
 
-![Figure 7: GARCH Conditional Volatility](./figures/advanced/adv_fig2_garch.png)
+![Figure 7: GARCH Conditional Volatility](figures/advanced/adv_fig2_garch.png)
 
 *Figure 7: Conditional volatility from the GJR-GARCH model. The crisis window shows a dramatic spike in conditional variance, followed by a slow decay consistent with the near-unit-root persistence parameter.*
 
@@ -402,7 +402,7 @@ A Random Forest classifier was trained to predict the crisis regime from 8 micro
 | Volume | 0.04 |
 | Depth Proxy | 0.02 |
 
-![Figure 8: Random Forest Feature Importance](./figures/advanced/adv_fig4_random_forest.png)
+![Figure 8: Random Forest Feature Importance](figures/advanced/adv_fig4_random_forest.png)
 
 *Figure 8: Random Forest feature importance for predicting the crisis regime. Price impact metrics (Kyle Lambda, Amihud) dominate, suggesting that liquidity deterioration was the primary early warning signal of the crisis.*
 
@@ -425,7 +425,7 @@ Dominant state by regime:
 | Recovery | 0 | **50** | 22 |
 | Post | 0 | **144** | 0 |
 
-![Figure 9: Markov-Switching States](./figures/advanced/adv_fig6_markov_switching.png)
+![Figure 9: Markov-Switching States](figures/advanced/adv_fig6_markov_switching.png)
 
 *Figure 9: Markov-Switching model state probabilities over the study period. The model cleanly separates the pre-crisis calm (State 0), crisis (State 2), and post-crisis elevated (State 1) regimes.*
 
@@ -441,7 +441,7 @@ A self-exciting Hawkes process was fitted to the arrival times of extreme LOP sp
 
 A branching ratio near 1.0 during the crisis indicates that each extreme LOP spike was generating nearly one additional spike — a self-amplifying cascade. The excitation half-life is **6.8 minutes**, meaning the elevated intensity from a spike persists for roughly 7 minutes before decaying.
 
-![Figure 10: Hawkes Process](./figures/advanced/adv_fig7_hawkes.png)
+![Figure 10: Hawkes Process](figures/advanced/adv_fig7_hawkes.png)
 
 *Figure 10: Hawkes process intensity function over the study period. The crisis window shows a dramatic spike in event intensity, with the self-exciting mechanism amplifying the initial shock.*
 
@@ -481,7 +481,7 @@ Factor Analysis (2 factors) loadings:
 
 Factor 1 is a "LOP/stablecoin stress" factor (loaded on USDC Dev and LOP USDT). Factor 2 is a "volatility/spread" factor (loaded on RV and Spread).
 
-![Figure 11: PCA and Factor Analysis](./figures/advanced/adv_fig8_pca_factor.png)
+![Figure 11: PCA and Factor Analysis](figures/advanced/adv_fig8_pca_factor.png)
 
 *Figure 11: PCA biplot and factor loadings. The first two principal components separate the crisis regime from normal trading conditions. The two-factor structure confirms that LOP stress and volatility/spread stress are distinct phenomena.*
 
@@ -529,19 +529,19 @@ Trade size: $100,000 notional per trade.
 | | Recovery | 96.5% | 44.8 | $1,865,978 |
 | | Post | 90.8% | 28.0 | $2,197,980 |
 
-![Figure 12: Cumulative P&L of Arbitrage Strategies](./figures/arb/arb_fig4_cumulative_pnl.png)
+![Figure 12: Cumulative P&L of Arbitrage Strategies](figures/arb/arb_fig4_cumulative_pnl.png)
 
 *Figure 12: Cumulative P&L for three arbitrage scenarios with different cost structures, assuming $100,000 notional per trade. The vast majority of profits were generated during the 3-day crisis window (highlighted in red).*
 
 ### 9.4. Basis vs. Cost Hurdles
 
-![Figure 13: Basis vs. Cost Hurdles](./figures/arb/arb_fig1_basis_vs_costs.png)
+![Figure 13: Basis vs. Cost Hurdles](figures/arb/arb_fig1_basis_vs_costs.png)
 
 *Figure 13: The gross basis (blue) vs. the three cost hurdles (dashed lines). Pre-crisis, the basis is well below all hurdles. During the crisis, the basis explodes to 300–1,300 bps, making all three strategies profitable.*
 
 ### 9.5. Crisis Window Deep Dive
 
-![Figure 14: Crisis Window Arbitrage](./figures/arb/arb_fig5_crisis_window.png)
+![Figure 14: Crisis Window Arbitrage](figures/arb/arb_fig5_crisis_window.png)
 
 *Figure 14: Minute-by-minute view of BTC/USD (red) vs BTC/USDT (blue) prices and the net P&L per trade during the crisis window (March 10–13). The divergence begins on March 11 at ~01:00 UTC.*
 
@@ -568,13 +568,13 @@ The variance decomposition `Var(b) = Var(x) + Var(y) − 2·Cov(x,y)` yields thr
 
 **Interpretation:** The interaction term S_xy dominates in every regime. During the crisis, the correlation between the cross-venue and FX legs reaches −0.997, meaning the two legs are almost perfectly co-moving and amplifying each other. In pre-crisis conditions, the cross-venue leg (S_x = 32%) is the primary driver, consistent with normal microstructure fragmentation.
 
-![Figure 15: Basis Variance Decomposition](./figures/br/br_fig2_variance_shares.png)
+![Figure 15: Basis Variance Decomposition](figures/br/br_fig2_variance_shares.png)
 
 *Figure 15: Stacked bar chart of variance shares by regime. The large interaction term (orange) reflects the near-perfect negative correlation between the cross-venue and FX legs during the crisis.*
 
 ### 10.2. Basis Time Series
 
-![Figure 16: Basis Components Time Series](./figures/br/br_fig1_basis_timeseries.png)
+![Figure 16: Basis Components Time Series](figures/br/br_fig1_basis_timeseries.png)
 
 *Figure 16: Time series of the three basis components (x, y, b) over the full study period. The cross-venue leg (x) and FX leg (y) move in opposite directions, with their interaction creating the large total basis during the crisis.*
 
@@ -594,7 +594,7 @@ Stress indicator: `Stress_t = 1 if |USDC/USD − 1| > 0.5%` (flags 3,830 minutes
 
 **Key takeaway:** The Kyle Lambda coefficient reverses sign in stress (from +0.362 to −0.073). The interaction term (−1.057, p<0.001) confirms this structural break statistically. In normal times, higher price impact is associated with a wider basis. In stress, the basis is driven by the stablecoin's credit risk, not microstructure frictions — and the R² collapses from 0.177 to 0.029.
 
-![Figure 17: Stress-Conditional Regression Coefficients](./figures/br/br_fig3_regression_coefs.png)
+![Figure 17: Stress-Conditional Regression Coefficients](figures/br/br_fig3_regression_coefs.png)
 
 *Figure 17: Coefficient estimates for the basis regression in normal vs. stress periods. The sign reversal of the Kyle Lambda coefficient (blue vs. orange) is the most striking result — microstructure price impact is positively associated with the basis in normal times but negatively associated in stress.*
 
@@ -622,11 +622,11 @@ Stress indicator: `Stress_t = 1 if |USDC/USD − 1| > 0.5%` (flags 3,830 minutes
 
 **Interpretation:** Pre-crisis, the basis exceeds the retail arbitrage threshold (71 bps) in exactly **0.0%** of minutes — the basis is pure frictional noise. During the crisis, it exceeds 71 bps in **63.0%** of minutes and exceeds 100 bps in **60.3%** of minutes. The full-sample excess kurtosis of 3.6 is entirely driven by the crisis period; the pre-crisis distribution is near-normal (kurtosis 0.88).
 
-![Figure 18: Tail Exceedance Rates](./figures/br/br_fig6_tail_exceedance.png)
+![Figure 18: Tail Exceedance Rates](figures/br/br_fig6_tail_exceedance.png)
 
 *Figure 18: Tail exceedance rates at multiple thresholds by regime. The pre-crisis bars are essentially zero at all thresholds above 10 bps, while the crisis bars remain high even at 200 bps.*
 
-![Figure 19: Moment Statistics](./figures/br/br_fig5_moments.png)
+![Figure 19: Moment Statistics](figures/br/br_fig5_moments.png)
 
 *Figure 19: Distribution of the residual basis by regime. The crisis distribution is dramatically wider and more symmetric (near-zero skewness), while the pre-crisis distribution is tightly clustered around zero.*
 
