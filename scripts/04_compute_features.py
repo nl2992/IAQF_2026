@@ -1,3 +1,4 @@
+from pathlib import Path
 """
 IAQF 2026 — Feature Engineering Script
 Computes all required analytical variables from the harmonized panel:
@@ -19,8 +20,8 @@ import pandas as pd
 import numpy as np
 import os
 
-IN_PATH  = "/home/ubuntu/iaqf_data/iaqf_harmonized_1m.parquet"
-OUT_DIR  = "/home/ubuntu/iaqf_data"
+IN_PATH  = str(Path(__file__).parent.parent / "data" / "parquet" / "harmonized_raw_1min.parquet")
+OUT_DIR  = str(Path(__file__).parent.parent / "data" / "parquet")
 
 # ── Load harmonized panel ─────────────────────────────────────────────────────
 print("Loading harmonized panel...")

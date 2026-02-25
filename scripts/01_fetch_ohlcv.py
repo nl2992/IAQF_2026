@@ -1,3 +1,4 @@
+from pathlib import Path
 """
 IAQF 2026 Data Retrieval Script
 Fetches 1-minute OHLCV candle data for BTC pairs across Binance.US and Coinbase
@@ -18,7 +19,7 @@ END_TS    = int(END_UTC.timestamp())     # seconds
 START_MS  = START_TS * 1000              # milliseconds
 END_MS    = END_TS * 1000               # milliseconds
 
-OUTPUT_DIR = "/home/ubuntu/iaqf_data/raw"
+OUTPUT_DIR = str(Path(__file__).parent.parent / "data" / "raw")
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 # ── Binance.US 1-minute klines ────────────────────────────────────────────────

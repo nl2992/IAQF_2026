@@ -1,3 +1,4 @@
+from pathlib import Path
 """
 IAQF 2026 — Excel Export Script v2 (fast, using xlsxwriter)
 """
@@ -6,7 +7,7 @@ import pandas as pd
 import numpy as np
 import os
 
-OUT_DIR    = "/home/ubuntu/iaqf_data"
+OUT_DIR    = str(Path(__file__).parent.parent / "data" / "parquet")
 EXCEL_PATH = os.path.join(OUT_DIR, "IAQF_DataFinal.xlsx")
 
 # ── Load data ─────────────────────────────────────────────────────────────────

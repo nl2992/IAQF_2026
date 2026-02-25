@@ -1,3 +1,4 @@
+from pathlib import Path
 """
 Download Binance aggTrades (tick-level) and 1-second klines for BTCUSDT and BTCBUSD
 for March 1–21, 2023 from data.binance.vision
@@ -6,7 +7,7 @@ import os, requests, time
 from datetime import date, timedelta
 
 BASE = "https://data.binance.vision/data/spot/daily"
-OUT  = "/home/ubuntu/iaqf_l2/raw"
+OUT  = str(Path(__file__).parent.parent / "data" / "raw")
 os.makedirs(OUT, exist_ok=True)
 
 PAIRS = ["BTCUSDT", "BTCBUSD"]

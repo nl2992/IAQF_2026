@@ -1,3 +1,4 @@
+from pathlib import Path
 """
 Fetch stablecoin FX pairs from Binance.US for March 1-21, 2023
 """
@@ -12,7 +13,7 @@ END_UTC   = datetime(2023, 3, 21, 23, 59, 59, tzinfo=timezone.utc)
 START_MS  = int(START_UTC.timestamp()) * 1000
 END_MS    = int(END_UTC.timestamp()) * 1000
 
-OUTPUT_DIR = "/home/ubuntu/iaqf_data/raw"
+OUTPUT_DIR = str(Path(__file__).parent.parent / "data" / "raw")
 BINANCEUS_URL = "https://api.binance.us/api/v3/klines"
 BINANCE_COLS = [
     "open_time_ms", "open", "high", "low", "close", "volume",

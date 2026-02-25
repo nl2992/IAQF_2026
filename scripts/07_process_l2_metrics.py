@@ -1,3 +1,4 @@
+from pathlib import Path
 """
 IAQF L2 Microstructure Pipeline v2
 =====================================
@@ -34,8 +35,8 @@ import pandas as pd
 from datetime import date, timedelta
 from scipy import stats
 
-RAW_DIR = "/home/ubuntu/iaqf_l2/raw"
-OUT_DIR = "/home/ubuntu/iaqf_l2/parquet"
+RAW_DIR = str(Path(__file__).parent.parent / "data" / "raw")
+OUT_DIR = str(Path(__file__).parent.parent / "data" / "parquet")
 os.makedirs(OUT_DIR, exist_ok=True)
 
 START = date(2023, 3, 1)

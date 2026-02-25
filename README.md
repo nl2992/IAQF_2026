@@ -236,7 +236,7 @@ Microstructure metrics computed from tick data. BTCUSDT: 30,240 rows (Mar 1–21
 
 The figure below provides a three-panel overview of the full study period. The top panel shows BTC prices across all quote currencies. The middle panel shows the log LOP deviations for USDT and USDC pairs on Binance.US. The bottom panel shows the USDC/USD and USDT/USD exchange rates.
 
-![Figure 1: Price, LOP, and FX Overview](figures/master_fig1_price_lop_overview.png)
+![Figure 1: Price, LOP, and FX Overview](figures/master/master_fig1_price_lop_overview.png)
 
 *Figure 1: Overview of BTC/USD price (top), LOP deviations for USDT and USDC pairs (middle), and stablecoin FX rates (bottom) for the full study period March 1–21, 2023. The crisis window (Mar 10–12) is highlighted in red.*
 
@@ -258,7 +258,7 @@ The table below summarises key metrics across all four regimes.
 
 The figure below shows a minute-by-minute view of the USDC/USD price and the corresponding BTC/USDC vs BTC/USD LOP deviation during the crisis window. The two series are almost perfect mirror images, with a correlation of **−0.997**.
 
-![Figure 2: USDC De-Peg Deep Dive](figures/master_fig3_stablecoin_depeg.png)
+![Figure 2: USDC De-Peg Deep Dive](figures/master/master_fig3_stablecoin_depeg.png)
 
 *Figure 2: Minute-by-minute USDC/USD price (top) and BTC/USDC vs BTC/USD LOP deviation (bottom) during the crisis. The near-perfect negative correlation (−0.997) confirms that the LOP deviation is almost entirely driven by the stablecoin de-peg.*
 
@@ -266,7 +266,7 @@ The figure below shows a minute-by-minute view of the USDC/USD price and the cor
 
 The figure below provides a 4-panel view of the crisis window (March 10–13), showing BTC prices across quote currencies, the LOP deviation, stablecoin FX rates, and realized volatility simultaneously.
 
-![Figure 3: Crisis Deep Dive](figures/master_fig9_crisis_deep_dive.png)
+![Figure 3: Crisis Deep Dive](figures/master/master_fig9_crisis_deep_dive.png)
 
 *Figure 3: 4-panel crisis deep dive at 1-minute resolution. The BTC/USD price (red) diverges sharply from BTC/USDT (blue) as the USDC de-peg propagates across markets.*
 
@@ -309,7 +309,7 @@ BTC prices are non-stationary (I(1)), while LOP deviations and stablecoin FX rat
 
 ### 6.6. OLS Regression Coefficients
 
-![Figure 4: OLS Regression Coefficients](figures/master_fig11_regression_coefs.png)
+![Figure 4: OLS Regression Coefficients](figures/master/master_fig11_regression_coefs.png)
 
 *Figure 4: Coefficient estimates (with 95% confidence intervals) from the OLS regression of log|LOP USDT| on microstructure variables and regime dummies. The regime dummies dominate — the crisis, recovery, and post periods all show significantly elevated LOP deviations relative to the pre-crisis baseline.*
 
@@ -333,7 +333,7 @@ Kyle's Lambda measures the price impact per unit of signed order flow. Higher va
 
 The BTCUSDC Kyle Lambda during the crisis is **64× higher** than BTCUSDT in the same period, reflecting the extreme thinness of the newly listed pair's order book.
 
-![Figure 5: Kyle's Lambda by Pair and Regime](figures/master_fig6_kyle_lambda.png)
+![Figure 5: Kyle's Lambda by Pair and Regime](figures/master/master_fig6_kyle_lambda.png)
 
 *Figure 5: Kyle's Lambda for BTC/USDT and BTC/USDC across different regimes. The newly listed BTC/USDC pair shows dramatically higher price impact during the crisis, with the mean driven by extreme outlier minutes when the order book was nearly empty.*
 

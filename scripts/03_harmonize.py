@@ -1,3 +1,4 @@
+from pathlib import Path
 """
 IAQF 2026 — Data Harmonization Script
 Merges all raw 1-minute candle files into a single unified UTC-aligned panel.
@@ -8,8 +9,8 @@ import pandas as pd
 import numpy as np
 import os
 
-RAW_DIR = "/home/ubuntu/iaqf_data/raw"
-OUT_DIR = "/home/ubuntu/iaqf_data"
+RAW_DIR = str(Path(__file__).parent.parent / "data" / "raw")
+OUT_DIR = str(Path(__file__).parent.parent / "data" / "parquet")
 
 # ── Study window ──────────────────────────────────────────────────────────────
 START = pd.Timestamp("2023-03-01 00:00:00", tz="UTC")
